@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: FutureBuilder<bool>(
           key: Key(DateTime.now().hashCode.toString()),
-          future: FlutterBarometer.isValid,
+          future: FlutterBarometer.instance.isValid,
           initialData: false,
           builder: (_, snapshot) => Column(
             children: [
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
               ),
               if (snapshot.data && openStream)
                 StreamBuilder<BarometerData>(
-                  stream: FlutterBarometer.stream,
+                  stream: FlutterBarometer.instance.stream,
                   builder: (context, snapshot) => Text('Pressure: ${snapshot.data?.pressure}, RelativeAltitude: ${snapshot?.data?.altitude}'),
                 ),
             ],
