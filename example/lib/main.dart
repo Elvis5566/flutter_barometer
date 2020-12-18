@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_barometer/flutter_barometer.dart';
 
@@ -12,6 +14,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var openStream = false;
+
+  var number = 0;
+  List<StreamSubscription> subscriptions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,21 @@ class _MyAppState extends State<MyApp> {
               RaisedButton(
                 child: Text(openStream ? 'Close Stream' : 'Open Stream'),
                 onPressed: () => setState(() => openStream = !openStream),
+              ),
+              RaisedButton(
+                child: Text('Add Stream'),
+                onPressed: () {
+                  final text = 'Subscription: $number';
+                  number++;
+                  subscriptions.add(FlutterBarometer.instance.stream.listen((event) => print(text)));
+                },
+              ),
+              RaisedButton(
+                child: Text('Cancel Subscription'),
+                onPressed: () {
+                  subscriptions.forEach((element) => element.cancel());
+                  subscriptions.clear();
+                },
               ),
               if (snapshot.data && openStream)
                 StreamBuilder<BarometerData>(

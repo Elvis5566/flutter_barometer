@@ -7,14 +7,16 @@ class FlutterBarometer {
 
   static const EventChannel _eventChannel = const EventChannel('flutter_barometer/event');
 
-  static var _streamCount = 0;
-
   static FlutterBarometer instance = FlutterBarometer();
 
   Future<bool> get isValid => _methodChannel.invokeMethod('isValid');
 
+  Stream<BarometerData> _stream;
+
   Stream<BarometerData> get stream {
-    return _eventChannel.receiveBroadcastStream(_streamCount++).map((event) => BarometerData(event["pressure"], event["altitude"]));
+    if (_stream != null) return _stream;
+    _stream = _eventChannel.receiveBroadcastStream().map((event) => BarometerData(event["pressure"], event["altitude"]));
+    return _stream;
   }
 }
 
