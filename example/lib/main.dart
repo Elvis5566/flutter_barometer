@@ -51,10 +51,10 @@ class _MyAppState extends State<MyApp> {
                   subscriptions.clear();
                 },
               ),
-              if (snapshot.data && openStream)
+              if ((snapshot.data ?? false) && openStream)
                 StreamBuilder<BarometerData>(
                   stream: FlutterBarometer.instance.stream,
-                  builder: (context, snapshot) => Text('Pressure: ${snapshot.data?.pressure}, RelativeAltitude: ${snapshot?.data?.altitude}'),
+                  builder: (context, snapshot) => Text('Pressure: ${snapshot.data?.pressure}, RelativeAltitude: ${snapshot.data?.altitude}'),
                 ),
             ],
           ),
