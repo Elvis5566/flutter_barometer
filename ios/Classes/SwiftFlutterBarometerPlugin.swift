@@ -30,8 +30,8 @@ public class SwiftFlutterBarometerPlugin: NSObject, FlutterPlugin, FlutterStream
 
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         altimeter.startRelativeAltitudeUpdates(to: OperationQueue.main) { data, error in
-            if data != nil {
-                events(["pressure": data?.pressure, "altitude": data?.relativeAltitude])
+            if let data = data {
+                events(["pressure": data.pressure, "altitude": data.relativeAltitude])
             }
         }
         return nil

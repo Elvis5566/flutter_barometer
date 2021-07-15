@@ -9,14 +9,17 @@ class FlutterBarometer {
 
   static FlutterBarometer instance = FlutterBarometer();
 
-  Future<bool> get isValid => _methodChannel.invokeMethod('isValid');
+  Future<bool> get isValid async {
+    final result = await _methodChannel.invokeMethod<bool>('isValid');
+    return result!;
+  }
 
-  Stream<BarometerData> _stream;
+  Stream<BarometerData>? _stream;
 
   Stream<BarometerData> get stream {
-    if (_stream != null) return _stream;
+    if (_stream != null) return _stream!;
     _stream = _eventChannel.receiveBroadcastStream().map((event) => BarometerData(event["pressure"], event["altitude"]));
-    return _stream;
+    return _stream!;
   }
 }
 
